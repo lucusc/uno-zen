@@ -18,6 +18,10 @@ strip   = require 'gulp-strip-css-comments'
 browserSync = require 'browser-sync'
 reload = browserSync.reload
 
+PORT =
+  GHOST: 2387
+  BROWSERSYNC: 3000
+
 # -- Files ---------------------------------------------------------------------
 
 src =
@@ -33,10 +37,11 @@ src =
     vendor : ['assets/vendor/fastclick/lib/fastclick.js'
               'assets/vendor/ghostHunter/jquery.ghostHunter.min.js'
               'assets/vendor/pace/pace.min.js'
+              'assets/vendor/fitvids/jquery.fitvids.js'
               'assets/vendor/reading-time/build/readingTime.min.js']
   css      :
     main   : 'assets/css/uno.css'
-    vendor : ['assets/vendor/animate.css/animate.min.css']
+    vendor : []
 
 dist =
   css      : 'assets/css'
@@ -80,10 +85,10 @@ gulp.task 'js', ->
 
 gulp.task 'server', ->
   browserSync.init null,
-    proxy: 'http://127.0.0.1:2387'
+    proxy: "http://127.0.0.1:#{PORT.GHOST}"
     files: ["assets/**/*.*"]
     reloadDelay: 300
-    port: 3000
+    port: PORT.BROWSERSYNC
   return
 
 gulp.task 'build', ['css', 'js']
