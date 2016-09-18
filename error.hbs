@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" style="background: url({{@blog.cover}}) center/cover no-repeat fixed">
   <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Houston, we have a problem - {{@blog.title}}</title>
+    <title>404, Houston, we have a problem</title>
     {{> meta}}
-    <link rel="stylesheet" type="text/css" href="{{asset "css/uno.css"}}" />
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,600italic,600,300">
+    <link rel="stylesheet" type="text/css" href="{{asset "css/uno-zen.css"}}" />
     {{ghost_head}}
   </head>
   <body>
@@ -15,14 +14,14 @@
           <a class="astronaut" href="#" title="return to base"></a>
         </div>
         <div class="mayday">
-          <h1>
-          Houston, we've got a problem. <br>
-          Houston, 404 error appeared.
-          </h1>
+          <h2>
+            Houston, we've got a problem. <br>
+            Houston, 404 error appeared.
+          </h2>
           <hr class="divider short">
-          <h1>
-          What happens now?
-          </h1>
+          <h2>
+            What happens now?
+          </h2>
         </div>
         <div class="astro-options">
           <a id="panic-button" class="btn small" href="#">Panic button</a>
@@ -31,7 +30,7 @@
       </section>
     </article>
     {{ghost_foot}}
-    <script type="text/javascript" src="{{asset "js/uno.js"}}"></script>
+    <script src="{{asset "js/uno-zen.common.js"}}" type="text/javascript" charset="utf-8"></script>
     {{> google-analytics}}
   </body>
 </html>

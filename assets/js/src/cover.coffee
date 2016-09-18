@@ -1,42 +1,26 @@
 'use strict'
 
 $ ->
-  el = document.body
-  isOpen = location.hash is '#open'
 
-  _expand = ->
-    Uno.loadingBar 'hide'
-    Uno.search.form 'hide'
-    $('.cover').removeClass 'collapsed'
-    $('.main').hide()
+  _animate = ->
+    setTimeout(->
+      $('.cover').addClass 'animated'
+    , 1000)
 
-  _collapsed = ->
-    $('.cover').addClass 'collapsed'
-    $('.link-item').addClass 'collapsed'
-    Uno.search.form 'show'
-    $('.main').show()
+  _expand = (options)->
+    $('main, .cover, .links > li, html').toggleClass 'expanded'
+    Uno.search.form options.form
 
-  $('#blog-button').click ->
-    return $("#cover-button").trigger("click") unless Uno.is 'device', 'desktop'
-    $('.cover').toggleClass 'collapsed'
-    Uno.search.form 'toggle'
-    $('.link-item').toggleClass 'collapsed'
-    toggle = if $('.main').is(":visible") then 'hide' else 'show'
-    $('.main')[toggle]()
+  $('#menu-button').click ->
+    $('.cover, main, #menu-button, html').toggleClass 'expanded'
 
-  $("#cover-button").click ->
-    $('.cover').toggleClass 'collapsed'
-    $('.main').toggleClass 'collapsed'
-    $('#cover-button').toggleClass 'collapsed'
-
-  if Uno.is 'device', 'desktop'
-    $('.cover').addClass 'animated'
+  $("#{window.open_button}, #avatar-link").click (event) ->
     if Uno.is 'page', 'home'
-      if isOpen
-        _collapsed()
-      else
-        _expand()
-    else
-      _collapsed()
-  else
-    _collapsed()
+      event.preventDefault()
+      location.hash = if location.hash is '' then '#open' else ''
+      return $('#menu-button').trigger 'click' unless Uno.is 'device', 'desktop'
+      _expand form: 'toggle'
+
+  if (Uno.is 'device', 'desktop') and (Uno.is 'page', 'home')
+    _animate()
+    _expand form: 'hide' unless location.hash is '#open'

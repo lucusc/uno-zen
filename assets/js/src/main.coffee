@@ -1,26 +1,31 @@
 'use strict'
 
 $ ->
-  el = document.body
-  el.dataset.page ?= Uno.context()
-  el.dataset.device ?= Uno.device()
-  $(window).on "resize", Uno.device()
-  $(window).on "orientationchange", Uno.device()
 
-  Uno.readTime()
-  FastClick.attach el unless Uno.is 'device', 'desktop'
+  InstantClick.init()
+
+  if Uno.is 'device', 'desktop'
+    $('a').not('[href*="mailto:"]').click ->
+      if this.href.indexOf(location.hostname) is -1
+        window.open $(this).attr 'href'
+        false
+  else
+    FastClick.attach Uno.app
+
+  if Uno.is('page', 'home') or Uno.is('page', 'paged') or Uno.is('page', 'tag')
+    Uno.timeAgo '#posts-list time'
 
   if Uno.is 'page', 'post'
-    $('.main').readingTime readingTimeTarget: '.post.reading-time > span'
+    Uno.timeAgo '.post.meta > time'
+    $('main').readingTime readingTimeTarget: '.post.reading-time > span'
+    Uno.linkify $('#post-content').children('h1, h2, h3, h4, h5, h6')
     $('.content').fitVids()
-    postTitle = $('#post-title').text()
-    postTitle = postTitle.substring(0, postTitle.length - 1); # delete dot
-    shareLink = "http://twitter.com/share?url=" + encodeURIComponent(document.URL)
-    shareLink += "&text=" + encodeURIComponent "#{postTitle} »"
-    $('#share_twitter').attr('href', shareLink)
 
   if Uno.is 'page', 'error'
     $('#panic-button').click ->
       s = document.createElement 'script'
       s.setAttribute 'src','https://nthitz.github.io/turndownforwhatjs/tdfw.js'
       document.body.appendChild s
+
+  $('#search-input').keyup (e) ->
+    $('#search-form').attr('action', Uno.search.url + '+' + encodeURIComponent(e.target.value))
